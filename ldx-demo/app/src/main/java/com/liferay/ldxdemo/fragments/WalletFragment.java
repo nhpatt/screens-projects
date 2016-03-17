@@ -20,14 +20,12 @@ import com.liferay.mobile.screens.context.SessionContext;
 import com.liferay.mobile.screens.ddl.list.DDLListScreenlet;
 import com.liferay.mobile.screens.ddl.model.Record;
 import com.liferay.mobile.screens.util.LiferayLogger;
-import com.liferay.mobile.screens.viewsets.defaultviews.LiferayCrouton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 /**
  * @author Javier Gamarra
@@ -52,11 +50,11 @@ public class WalletFragment extends AbstractWebContentFragment implements BaseLi
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (!SessionContext.hasSession()) {
+		if (!SessionContext.isLoggedIn()) {
 			startActivity(new Intent(getActivity(), MainActivity.class));
 		}
 
-		new LiferayCrouton.Builder().withInfoColor(R.color.material_primary_crouton).build();
+//		new LiferayCrouton.Builder().withInfoColor(R.color.material_primary_crouton).build();
 	}
 
 	@Override
@@ -100,7 +98,7 @@ public class WalletFragment extends AbstractWebContentFragment implements BaseLi
 							addToBackStack(null).
 							commit();
 
-					Crouton.clearCroutonsForActivity(getActivity());
+//					Crouton.clearCroutonsForActivity(getActivity());
 				} catch (JSONException e) {
 					LiferayLogger.e("error parsing JSON", e);
 				}
