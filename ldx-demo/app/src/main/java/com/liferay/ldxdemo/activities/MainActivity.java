@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
+import com.liferay.ldxdemo.BuildConfig;
 import com.liferay.ldxdemo.R;
 import com.liferay.ldxdemo.notification.SnackbarUtil;
 import com.liferay.mobile.screens.auth.login.LoginListener;
@@ -25,7 +26,9 @@ public class MainActivity extends AppCompatActivity implements LoginListener, Vi
 		LoginScreenlet loginScreenlet = (LoginScreenlet) findViewById(R.id.login_screenlet);
 		loginScreenlet.setListener(this);
 
-		setDefaultValuesForUserAndPassword();
+		if (BuildConfig.DEBUG) {
+			setDefaultValuesForUserAndPassword();
+		}
 
 		findViewById(R.id.sign_up).setOnClickListener(this);
 	}
@@ -38,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements LoginListener, Vi
 	@Override
 	public void onLoginFailure(Exception e) {
 		SnackbarUtil.showMessage(this, "Login failed!");
-	}
-
 	}
 
 	private void setDefaultValuesForUserAndPassword() {
