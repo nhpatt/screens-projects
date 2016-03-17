@@ -42,8 +42,7 @@
         <service android:name=".notification.PushService"/>
 
         <activity
-            android:name=".activities.MenuActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:name=".activities.MenuActivity" />
         <activity android:name=".activities.SignUpActivity"/>
     </application>
 
