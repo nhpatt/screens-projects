@@ -6,14 +6,14 @@
                 android:background="@android:color/white"
                 tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/background"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/liferay_logo"/>
+    <!--<ImageView-->
+        <!--android:id="@+id/background"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="150dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_marginTop="25dp"-->
+        <!--android:background="@drawable/liferay_logo"/>-->
 
     <com.liferay.mobile.screens.auth.login.LoginScreenlet
         android:id="@+id/login_screenlet"

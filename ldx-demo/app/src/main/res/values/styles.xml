@@ -1,14 +1,9 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="material_theme">
         <item name="colorPrimary">@color/material_primary_crouton</item>
         <item name="android:textColor">#FFFFFF</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse"/>
