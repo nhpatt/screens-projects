@@ -53,8 +53,6 @@ public class WalletFragment extends AbstractWebContentFragment implements BaseLi
 		if (!SessionContext.isLoggedIn()) {
 			startActivity(new Intent(getActivity(), MainActivity.class));
 		}
-
-//		new LiferayCrouton.Builder().withInfoColor(R.color.material_primary_crouton).build();
 	}
 
 	@Override
@@ -98,7 +96,6 @@ public class WalletFragment extends AbstractWebContentFragment implements BaseLi
 							addToBackStack(null).
 							commit();
 
-//					Crouton.clearCroutonsForActivity(getActivity());
 				} catch (JSONException e) {
 					LiferayLogger.e("error parsing JSON", e);
 				}

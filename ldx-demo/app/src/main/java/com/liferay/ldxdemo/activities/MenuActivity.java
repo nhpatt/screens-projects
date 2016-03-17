@@ -24,6 +24,7 @@ import com.liferay.ldxdemo.fragments.ReviewFragment;
 import com.liferay.ldxdemo.fragments.ShoesFragment;
 import com.liferay.ldxdemo.fragments.WalletFragment;
 import com.liferay.ldxdemo.fragments.WomenFragment;
+import com.liferay.ldxdemo.notification.SnackbarUtil;
 import com.liferay.mobile.android.service.Session;
 import com.liferay.mobile.screens.context.SessionContext;
 import com.liferay.mobile.screens.context.User;
@@ -235,8 +236,7 @@ public class MenuActivity extends PushScreensActivity implements FragmentLoaded,
             public void run() {
                 DDLListScreenlet ddLList = (DDLListScreenlet) findViewById(R.id.wallet_default);
                 if (ddLList != null) {
-//                    Crouton.clearCroutonsForActivity(MenuActivity.this);
-//                    LiferayCrouton.info(MenuActivity.this, "Reloading list...");
+                    SnackbarUtil.showMessage(MenuActivity.this, "Reloading list...");
                     ddLList.loadPage(0);
                 }
             }

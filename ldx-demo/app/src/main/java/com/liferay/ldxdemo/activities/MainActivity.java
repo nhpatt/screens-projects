@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.liferay.ldxdemo.R;
+import com.liferay.ldxdemo.notification.SnackbarUtil;
 import com.liferay.mobile.screens.auth.login.LoginListener;
 import com.liferay.mobile.screens.auth.login.LoginScreenlet;
 import com.liferay.mobile.screens.context.User;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements LoginListener, Vi
 
 	@Override
 	public void onLoginFailure(Exception e) {
+		SnackbarUtil.showMessage(this, "Login failed!");
+	}
 
 	}
 
