@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/background"
         liferay:basicAuthMethod="screen_name"
-        liferay:layoutId="@layout/login_material"/>
+        liferay:layoutId="@layout/alternative_login"/>
 
 </RelativeLayout>
