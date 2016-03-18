@@ -38,5 +38,4 @@ dependencies {
 
 repositories {
     maven { url "http://dl.bintray.com/nhpatt/liferay-mobile" }
-    maven { url "http://dl.bintray.com/tbruyelle/tbruyelle" }
 }
