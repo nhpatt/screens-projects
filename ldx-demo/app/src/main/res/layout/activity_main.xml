@@ -1,27 +1,41 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:liferay="http://schemas.android.com/apk/res-auto"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
-                tools:context=".MainActivity">
+                tools:context=".activities.MainActivity">
 
-    <ImageView
-        android:id="@+id/background"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/liferay_logo"/>
+	<android.support.design.widget.AppBarLayout
+		app:theme="@style/AppOverlay"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<android.support.v7.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:title="@string/app_name"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize" />
+
+	</android.support.design.widget.AppBarLayout>
+
+    <!--<ImageView-->
+        <!--android:id="@+id/background"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="150dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_marginTop="25dp"-->
+        <!--android:background="@drawable/liferay_logo"/>-->
 
     <com.liferay.mobile.screens.auth.login.LoginScreenlet
+		android:layout_marginTop="100dp"
         android:id="@+id/login_screenlet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/background"
-        liferay:basicAuthMethod="email"
-        liferay:layoutId="@layout/login_material"/>
+		app:basicAuthMethod="email"
+		app:layoutId="@layout/login_material"/>
 
     <Button
         android:id="@+id/sign_up"
