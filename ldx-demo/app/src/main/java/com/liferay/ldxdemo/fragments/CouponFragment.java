@@ -14,20 +14,20 @@ import com.liferay.ldxdemo.R;
  */
 public class CouponFragment extends Fragment {
 
-    public static CouponFragment newInstance(Integer recordId, Integer recordSetId, int ddmStructureId) {
-        Bundle args = new Bundle();
-        args.putInt("recordId", recordId);
-        args.putInt("recordSetId", recordSetId);
-        args.putInt("ddmStructureId", ddmStructureId);
-        CouponFragment fragment = new CouponFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+	public static CouponFragment newInstance(Integer recordId, Integer recordSetId, int ddmStructureId) {
+		Bundle args = new Bundle();
+		args.putInt("recordId", recordId);
+		args.putInt("recordSetId", recordSetId);
+		args.putInt("ddmStructureId", ddmStructureId);
+		CouponFragment fragment = new CouponFragment();
+		fragment.setArguments(args);
+		return fragment;
+	}
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.content_coupon, container, false);
-    }
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.content_coupon, container, false);
+	}
 
 }

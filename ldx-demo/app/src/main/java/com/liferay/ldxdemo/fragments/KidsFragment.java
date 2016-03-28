@@ -13,18 +13,18 @@ import com.liferay.ldxdemo.R;
  */
 public class KidsFragment extends NamedFragment {
 
-    public static KidsFragment newInstance() {
-        return new KidsFragment();
-    }
+	public static KidsFragment newInstance() {
+		return new KidsFragment();
+	}
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.content_kids, container, false);
-    }
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.content_kids, container, false);
+	}
 
-    @Override
-    public String getName() {
-        return "Kids";
-    }
+	@Override
+	public String getName() {
+		return "Kids";
+	}
 }
