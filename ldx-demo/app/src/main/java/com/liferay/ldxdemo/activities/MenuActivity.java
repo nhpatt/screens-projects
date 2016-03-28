@@ -1,18 +1,13 @@
 package com.liferay.ldxdemo.activities;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,6 +15,7 @@ import com.liferay.ldxdemo.R;
 import com.liferay.ldxdemo.fragments.CategoryFragment;
 import com.liferay.ldxdemo.fragments.KidsFragment;
 import com.liferay.ldxdemo.fragments.MenFragment;
+import com.liferay.ldxdemo.fragments.NamedFragment;
 import com.liferay.ldxdemo.fragments.ReviewFragment;
 import com.liferay.ldxdemo.fragments.ShoesFragment;
 import com.liferay.ldxdemo.fragments.WalletFragment;
@@ -33,112 +29,51 @@ import com.liferay.mobile.screens.push.PushScreensActivity;
 
 import org.json.JSONObject;
 
-public class MenuActivity extends PushScreensActivity implements FragmentLoaded, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class MenuActivity extends PushScreensActivity
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    private static final float MIN_DISTANCE = 200f;
-    private int position;
-    //	private String[] menuItems = {"Shop by Category", "My Wallet", "Men", "Women", "Kids", "Shoes", "Review"};
-    private String[] menuItems;
+    private int fragmentId;
     private DrawerLayout drawer;
     private NavigationView navigationView;
-    private GestureDetector.OnGestureListener listener = new GestureDetector.OnGestureListener() {
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public void onShowPress(MotionEvent e) {
-
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            return false;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            try {
-                if (Math.abs(e1.getY() - e2.getY()) < MIN_DISTANCE / 2
-                        && e1.getX() - e2.getX() > MIN_DISTANCE
-                        && Math.abs(velocityX) > MIN_DISTANCE) {
-                    moveToNextFragment();
-                    return false;
-                }
-            } catch (Exception e) {
-                // nothing
-            }
-            return true;
-        }
-    };
-
-    protected void createMenuItems() {
-        Resources res = getResources();
-        menuItems = res.getStringArray(R.array.menu_items);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createMenuItems();
         setContentView(R.layout.activity_menu);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        position = getIntent().getIntExtra("position", 0);
-        navigationView.getMenu().getItem(position).setChecked(true);
-
-        User user = SessionContext.getCurrentUser();
-
-        View headerView = navigationView.getHeaderView(0);
-
-
-        ((TextView) headerView.findViewById(R.id.logged_user)).setText(user.getFirstName() + " " + user.getLastName());
-        headerView.findViewById(R.id.liferay_portrait).setOnClickListener(this);
+        fragmentId = getIntent().getIntExtra("fragmentId", 0);
+        navigationView.getMenu().getItem(fragmentId).setChecked(true);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.content_frame, getFragmentToRender(position)).
-                addToBackStack("category").
-                commit();
+        inflateFragmentAtPosition(fragmentId);
+        loadPortrait();
     }
 
-    @Override
-    public void onFragmentLoaded(View view, final boolean interceptEvents) {
-        if (view != null) {
-            final GestureDetector gestureDetector = new GestureDetector(this, listener);
-            view.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(final View view, final MotionEvent event) {
-                    gestureDetector.onTouchEvent(event);
-                    return interceptEvents;
-                }
-            });
+    public void loadPortrait() {
+        User user = SessionContext.getCurrentUser();
+
+        View headerView = navigationView.getHeaderView(0);
+
+        if (SessionContext.isLoggedIn()) {
+            String text = user.getFirstName() + " " + user.getLastName();
+            ((TextView) headerView.findViewById(R.id.logged_user)).setText(text);
+            headerView.findViewById(R.id.liferay_portrait).setOnClickListener(this);
         }
     }
 
@@ -151,24 +86,7 @@ public class MenuActivity extends PushScreensActivity implements FragmentLoaded,
         if (id == R.id.profile) {
             startActivity(new Intent(this, ProfileActivity.class));
         } else {
-
-            if (id == R.id.category) {
-                position = 0;
-            } else if (id == R.id.wallet) {
-                position = 1;
-            } else if (id == R.id.men) {
-                position = 2;
-            } else if (id == R.id.women) {
-                position = 3;
-            } else if (id == R.id.kids) {
-                position = 4;
-            } else if (id == R.id.shoes) {
-                position = 5;
-            } else if (id == R.id.review) {
-                position = 6;
-            }
-
-            inflateFragmentAtPosition(position);
+            inflateFragmentAtPosition(id);
         }
 
         return true;
@@ -192,14 +110,14 @@ public class MenuActivity extends PushScreensActivity implements FragmentLoaded,
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt("position", position);
+        outState.putInt("fragmentId", fragmentId);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        position = savedInstanceState.getInt("position");
+        fragmentId = savedInstanceState.getInt("fragmentId");
     }
 
     @Override
@@ -230,40 +148,36 @@ public class MenuActivity extends PushScreensActivity implements FragmentLoaded,
         return getString(R.string.sender_id);
     }
 
-    private void moveToNextFragment() {
-        position = (position + 1) % menuItems.length;
-
-        inflateFragmentAtPosition(position);
-    }
-
-    private Fragment getFragmentToRender(int position) {
+    private NamedFragment getFragmentToRender(int position) {
         switch (position) {
-            case 1:
+            case R.id.wallet:
                 return WalletFragment.newInstance();
-            case 2:
+            case R.id.men:
                 return MenFragment.newInstance();
-            case 3:
+            case R.id.women:
                 return WomenFragment.newInstance();
-            case 4:
+            case R.id.kids:
                 return KidsFragment.newInstance();
-            case 5:
+            case R.id.shoes:
                 return ShoesFragment.newInstance();
-            case 6:
+            case R.id.review:
                 return ReviewFragment.newInstance();
             default:
                 return CategoryFragment.newInstance();
         }
     }
 
-    public void inflateFragmentAtPosition(int position) {
+    public void inflateFragmentAtPosition(int fragmentId) {
 
-        navigationView.getMenu().getItem(position).setChecked(true);
+        this.fragmentId = fragmentId;
 
-        getSupportActionBar().setTitle(menuItems[position]);
+        NamedFragment fragmentToRender = getFragmentToRender(fragmentId);
+
+        getSupportActionBar().setTitle(fragmentToRender.getName());
 
         getSupportFragmentManager().
                 beginTransaction().
-                replace(R.id.content_frame, getFragmentToRender(position)).
+                replace(R.id.content_frame, fragmentToRender).
                 addToBackStack(null).
                 commit();
 
