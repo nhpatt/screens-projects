@@ -18,7 +18,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpListener 
 
 		SignUpScreenlet signUpScreenlet = (SignUpScreenlet) findViewById(R.id.signup_screenlet);
 		signUpScreenlet.setListener(this);
-
 	}
 
 	@Override

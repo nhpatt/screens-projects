@@ -35,7 +35,6 @@ public class ProfileActivity extends AppCompatActivity implements UserPortraitLi
 
 		userPortraitScreenlet = (UserPortraitScreenlet) findViewById(R.id.user_portrait_profile);
 		userPortraitScreenlet.setListener(this);
-
 	}
 
 	@Override

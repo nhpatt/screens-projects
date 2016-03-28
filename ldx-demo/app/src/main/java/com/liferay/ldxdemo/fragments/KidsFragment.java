@@ -11,22 +11,20 @@ import com.liferay.ldxdemo.R;
 /**
  * @author Javier Gamarra
  */
-public class KidsFragment extends AbstractWebContentFragment {
+public class KidsFragment extends NamedFragment {
 
+    public static KidsFragment newInstance() {
+        return new KidsFragment();
+    }
 
-	public static KidsFragment newInstance() {
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.content_kids, container, false);
+    }
 
-		Bundle args = new Bundle();
-
-		KidsFragment fragment = new KidsFragment();
-		fragment.setArguments(args);
-		return fragment;
-	}
-
-	@Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.content_kids, container, false);
-	}
-
+    @Override
+    public String getName() {
+        return "Kids";
+    }
 }

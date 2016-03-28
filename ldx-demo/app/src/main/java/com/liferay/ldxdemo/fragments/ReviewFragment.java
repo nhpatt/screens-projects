@@ -16,15 +16,10 @@ import com.liferay.mobile.screens.ddl.model.Record;
 import org.json.JSONObject;
 
 
-public class ReviewFragment extends AbstractDDLFormFragment implements DDLFormListener {
+public class ReviewFragment extends NamedFragment implements DDLFormListener {
 
     public static ReviewFragment newInstance() {
-
-        Bundle args = new Bundle();
-
-        ReviewFragment fragment = new ReviewFragment();
-        fragment.setArguments(args);
-        return fragment;
+        return new ReviewFragment();
     }
 
     @Nullable
@@ -50,12 +45,12 @@ public class ReviewFragment extends AbstractDDLFormFragment implements DDLFormLi
 
     @Override
     public void onDDLFormRecordAdded(Record record) {
-        ((MenuActivity) getActivity()).inflateFragmentAtPosition(0);
+        goToCategory();
     }
 
     @Override
     public void onDDLFormRecordUpdated(Record record) {
-        ((MenuActivity) getActivity()).inflateFragmentAtPosition(0);
+        goToCategory();
     }
 
     @Override
@@ -101,5 +96,14 @@ public class ReviewFragment extends AbstractDDLFormFragment implements DDLFormLi
     @Override
     public void storingToCache(Object object) {
 
+    }
+
+    private void goToCategory() {
+        ((MenuActivity) getActivity()).inflateFragmentAtPosition(R.id.category);
+    }
+
+    @Override
+    public String getName() {
+        return "Review";
     }
 }

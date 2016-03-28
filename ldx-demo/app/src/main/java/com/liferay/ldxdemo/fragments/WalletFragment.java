@@ -1,22 +1,20 @@
 package com.liferay.ldxdemo.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.liferay.ldxdemo.R;
-import com.liferay.ldxdemo.activities.FragmentLoaded;
-import com.liferay.ldxdemo.activities.MainActivity;
+import com.liferay.ldxdemo.activities.MenuActivity;
 import com.liferay.mobile.android.callback.typed.JSONObjectCallback;
 import com.liferay.mobile.android.service.Session;
 import com.liferay.mobile.android.v62.ddlrecordset.DDLRecordSetService;
 import com.liferay.mobile.screens.base.list.BaseListListener;
 import com.liferay.mobile.screens.base.list.BaseListScreenlet;
 import com.liferay.mobile.screens.context.SessionContext;
+import com.liferay.mobile.screens.context.storage.CredentialsStorageBuilder;
 import com.liferay.mobile.screens.ddl.list.DDLListScreenlet;
 import com.liferay.mobile.screens.ddl.model.Record;
 import com.liferay.mobile.screens.util.LiferayLogger;
@@ -30,9 +28,9 @@ import java.util.List;
 /**
  * @author Javier Gamarra
  */
-public class WalletFragment extends AbstractWebContentFragment implements BaseListListener<Record> {
+public class WalletFragment extends NamedFragment implements BaseListListener<Record> {
 
-	public static Fragment newInstance() {
+	public static WalletFragment newInstance() {
 		return new WalletFragment();
 	}
 
@@ -51,7 +49,8 @@ public class WalletFragment extends AbstractWebContentFragment implements BaseLi
 		super.onCreate(savedInstanceState);
 
 		if (!SessionContext.isLoggedIn()) {
-			startActivity(new Intent(getActivity(), MainActivity.class));
+			SessionContext.loadStoredCredentials(CredentialsStorageBuilder.StorageType.SHARED_PREFERENCES);
+			((MenuActivity) getActivity()).loadPortrait();
 		}
 	}
 
@@ -124,10 +123,7 @@ public class WalletFragment extends AbstractWebContentFragment implements BaseLi
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		FragmentLoaded activity = (FragmentLoaded) getActivity();
-		activity.onFragmentLoaded(getView().findViewById(R.id.wallet_layout), true);
+	public String getName() {
+		return "My Wallet";
 	}
 }
