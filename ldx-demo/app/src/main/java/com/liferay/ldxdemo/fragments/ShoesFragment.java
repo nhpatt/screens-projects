@@ -11,15 +11,10 @@ import com.liferay.ldxdemo.R;
 /**
  * @author Javier Gamarra
  */
-public class ShoesFragment extends AbstractWebContentFragment {
+public class ShoesFragment extends NamedFragment {
 
 	public static ShoesFragment newInstance() {
-
-		Bundle args = new Bundle();
-
-		ShoesFragment fragment = new ShoesFragment();
-		fragment.setArguments(args);
-		return fragment;
+		return new ShoesFragment();
 	}
 
 	@Nullable
@@ -28,4 +23,8 @@ public class ShoesFragment extends AbstractWebContentFragment {
 		return inflater.inflate(R.layout.content_shoes, container, false);
 	}
 
+	@Override
+	public String getName() {
+		return "Shoes";
+	}
 }

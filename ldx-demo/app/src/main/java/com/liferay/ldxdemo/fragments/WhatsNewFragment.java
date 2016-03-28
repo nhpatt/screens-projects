@@ -2,6 +2,7 @@ package com.liferay.ldxdemo.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,10 @@ import com.liferay.mobile.screens.base.list.BaseListScreenlet;
 
 import java.util.List;
 
-public class WhatsNewFragment extends AbstractAssetPubFragment implements AssetListListener {
+public class WhatsNewFragment extends Fragment implements AssetListListener {
 
 	public static WhatsNewFragment newInstance() {
-
-		Bundle args = new Bundle();
-
-		WhatsNewFragment fragment = new WhatsNewFragment();
-		fragment.setArguments(args);
-		return fragment;
+		return new WhatsNewFragment();
 	}
 
 	@Nullable

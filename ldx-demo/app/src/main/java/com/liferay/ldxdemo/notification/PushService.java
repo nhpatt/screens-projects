@@ -26,11 +26,8 @@ public class PushService extends AbstractPushService {
 
 	@Override
 	protected void processJSONNotification(final JSONObject json) throws JSONException {
-		boolean creation = json.has("newNotification") && json.getBoolean("newNotification");
-		String titleHeader = (creation ? "New" : "Updated") + " notification: ";
 		String title = getString(R.string.app_slogan);
 		String description = "Near our store today? Hurry in and use your 25% off our Spring Shoe Sale! Click for details.";
-		String photo = getString(json, "photo");
 
 		createGlobalNotification(title, description);
 	}
@@ -60,9 +57,5 @@ public class PushService extends AbstractPushService {
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 		stackBuilder.addNextIntent(resultIntent);
 		return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-	}
-
-	private String getString(final JSONObject json, final String element) throws JSONException {
-		return json.has(element) ? json.getString(element) : "";
 	}
 }

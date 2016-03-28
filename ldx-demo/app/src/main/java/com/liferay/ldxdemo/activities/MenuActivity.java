@@ -1,18 +1,13 @@
 package com.liferay.ldxdemo.activities;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,6 +15,7 @@ import com.liferay.ldxdemo.R;
 import com.liferay.ldxdemo.fragments.CategoryFragment;
 import com.liferay.ldxdemo.fragments.KidsFragment;
 import com.liferay.ldxdemo.fragments.MenFragment;
+import com.liferay.ldxdemo.fragments.NamedFragment;
 import com.liferay.ldxdemo.fragments.ReviewFragment;
 import com.liferay.ldxdemo.fragments.ShoesFragment;
 import com.liferay.ldxdemo.fragments.WalletFragment;
@@ -33,240 +29,158 @@ import com.liferay.mobile.screens.push.PushScreensActivity;
 
 import org.json.JSONObject;
 
-public class MenuActivity extends PushScreensActivity implements FragmentLoaded, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class MenuActivity extends PushScreensActivity
+		implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    private static final float MIN_DISTANCE = 200f;
-    private int position;
-    //	private String[] menuItems = {"Shop by Category", "My Wallet", "Men", "Women", "Kids", "Shoes", "Review"};
-    private String[] menuItems;
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private GestureDetector.OnGestureListener listener = new GestureDetector.OnGestureListener() {
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return false;
-        }
+	private int fragmentId;
+	private DrawerLayout drawer;
+	private NavigationView navigationView;
 
-        @Override
-        public void onShowPress(MotionEvent e) {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_menu);
 
-        }
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return false;
-        }
+		drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+		drawer.addDrawerListener(toggle);
+		toggle.syncState();
 
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            return false;
-        }
+		navigationView = (NavigationView) findViewById(R.id.nav_view);
+		navigationView.setNavigationItemSelectedListener(this);
 
-        @Override
-        public void onLongPress(MotionEvent e) {
+		fragmentId = getIntent().getIntExtra("fragmentId", 0);
+		navigationView.getMenu().getItem(fragmentId).setChecked(true);
+	}
 
-        }
+	@Override
+	protected void onResume() {
+		super.onResume();
 
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            try {
-                if (Math.abs(e1.getY() - e2.getY()) < MIN_DISTANCE / 2
-                        && e1.getX() - e2.getX() > MIN_DISTANCE
-                        && Math.abs(velocityX) > MIN_DISTANCE) {
-                    moveToNextFragment();
-                    return false;
-                }
-            } catch (Exception e) {
-                // nothing
-            }
-            return true;
-        }
-    };
+		inflateFragmentAtPosition(fragmentId);
+		loadPortrait();
+	}
 
-    protected void createMenuItems() {
-        Resources res = getResources();
-        menuItems = res.getStringArray(R.array.menu_items);
-    }
+	public void loadPortrait() {
+		User user = SessionContext.getCurrentUser();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        createMenuItems();
-        setContentView(R.layout.activity_menu);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+		View headerView = navigationView.getHeaderView(0);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+		if (SessionContext.isLoggedIn()) {
+			String text = user.getFirstName() + " " + user.getLastName();
+			((TextView) headerView.findViewById(R.id.logged_user)).setText(text);
+			headerView.findViewById(R.id.liferay_portrait).setOnClickListener(this);
+		}
+	}
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+	@SuppressWarnings("StatementWithEmptyBody")
+	@Override
+	public boolean onNavigationItemSelected(MenuItem item) {
+		// Handle navigation view item clicks here.
+		int id = item.getItemId();
 
-        position = getIntent().getIntExtra("position", 0);
-        navigationView.getMenu().getItem(position).setChecked(true);
+		if (id == R.id.profile) {
+			startActivity(new Intent(this, ProfileActivity.class));
+		} else {
+			inflateFragmentAtPosition(id);
+		}
 
-        User user = SessionContext.getCurrentUser();
+		return true;
+	}
 
-        View headerView = navigationView.getHeaderView(0);
+	@Override
+	public void onClick(View v) {
+		startActivity(new Intent(this, ProfileActivity.class));
+	}
 
+	@Override
+	public void onBackPressed() {
+		if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+			drawer.closeDrawer(GravityCompat.START);
+		} else {
+			super.onBackPressed();
+		}
+	}
 
-        ((TextView) headerView.findViewById(R.id.logged_user)).setText(user.getFirstName() + " " + user.getLastName());
-        headerView.findViewById(R.id.liferay_portrait).setOnClickListener(this);
-    }
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+		outState.putInt("fragmentId", fragmentId);
+	}
 
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.content_frame, getFragmentToRender(position)).
-                addToBackStack("category").
-                commit();
-    }
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
 
-    @Override
-    public void onFragmentLoaded(View view, final boolean interceptEvents) {
-        if (view != null) {
-            final GestureDetector gestureDetector = new GestureDetector(this, listener);
-            view.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(final View view, final MotionEvent event) {
-                    gestureDetector.onTouchEvent(event);
-                    return interceptEvents;
-                }
-            });
-        }
-    }
+		fragmentId = savedInstanceState.getInt("fragmentId");
+	}
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+	@Override
+	protected Session getDefaultSession() {
+		return SessionContext.createSessionFromCurrentSession();
+	}
 
-        if (id == R.id.profile) {
-            startActivity(new Intent(this, ProfileActivity.class));
-        } else {
+	@Override
+	protected void onPushNotificationReceived(final JSONObject jsonObject) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				DDLListScreenlet ddLList = (DDLListScreenlet) findViewById(R.id.wallet_default);
+				if (ddLList != null) {
+					SnackbarUtil.showMessage(MenuActivity.this, "Reloading list...");
+					ddLList.loadPage(0);
+				}
+			}
+		});
+	}
 
-            if (id == R.id.category) {
-                position = 0;
-            } else if (id == R.id.wallet) {
-                position = 1;
-            } else if (id == R.id.men) {
-                position = 2;
-            } else if (id == R.id.women) {
-                position = 3;
-            } else if (id == R.id.kids) {
-                position = 4;
-            } else if (id == R.id.shoes) {
-                position = 5;
-            } else if (id == R.id.review) {
-                position = 6;
-            }
+	@Override
+	protected void onErrorRegisteringPush(final String message, final Exception e) {
+	}
 
-            inflateFragmentAtPosition(position);
-        }
+	@Override
+	protected String getSenderId() {
+		return getString(R.string.sender_id);
+	}
 
-        return true;
-    }
+	private NamedFragment getFragmentToRender(int position) {
+		switch (position) {
+			case R.id.wallet:
+				return WalletFragment.newInstance();
+			case R.id.men:
+				return MenFragment.newInstance();
+			case R.id.women:
+				return WomenFragment.newInstance();
+			case R.id.kids:
+				return KidsFragment.newInstance();
+			case R.id.shoes:
+				return ShoesFragment.newInstance();
+			case R.id.review:
+				return ReviewFragment.newInstance();
+			default:
+				return CategoryFragment.newInstance();
+		}
+	}
 
-    @Override
-    public void onClick(View v) {
-        startActivity(new Intent(this, ProfileActivity.class));
-    }
+	public void inflateFragmentAtPosition(int fragmentId) {
 
-    @Override
-    public void onBackPressed() {
-        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+		this.fragmentId = fragmentId;
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+		NamedFragment fragmentToRender = getFragmentToRender(fragmentId);
 
-        outState.putInt("position", position);
-    }
+		getSupportActionBar().setTitle(fragmentToRender.getName());
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+		getSupportFragmentManager().
+				beginTransaction().
+				replace(R.id.content_frame, fragmentToRender).
+				addToBackStack(null).
+				commit();
 
-        position = savedInstanceState.getInt("position");
-    }
-
-    @Override
-    protected Session getDefaultSession() {
-        return SessionContext.createSessionFromCurrentSession();
-    }
-
-    @Override
-    protected void onPushNotificationReceived(final JSONObject jsonObject) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                DDLListScreenlet ddLList = (DDLListScreenlet) findViewById(R.id.wallet_default);
-                if (ddLList != null) {
-                    SnackbarUtil.showMessage(MenuActivity.this, "Reloading list...");
-                    ddLList.loadPage(0);
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void onErrorRegisteringPush(final String message, final Exception e) {
-    }
-
-    @Override
-    protected String getSenderId() {
-        return getString(R.string.sender_id);
-    }
-
-    private void moveToNextFragment() {
-        position = (position + 1) % menuItems.length;
-
-        inflateFragmentAtPosition(position);
-    }
-
-    private Fragment getFragmentToRender(int position) {
-        switch (position) {
-            case 1:
-                return WalletFragment.newInstance();
-            case 2:
-                return MenFragment.newInstance();
-            case 3:
-                return WomenFragment.newInstance();
-            case 4:
-                return KidsFragment.newInstance();
-            case 5:
-                return ShoesFragment.newInstance();
-            case 6:
-                return ReviewFragment.newInstance();
-            default:
-                return CategoryFragment.newInstance();
-        }
-    }
-
-    public void inflateFragmentAtPosition(int position) {
-
-        navigationView.getMenu().getItem(position).setChecked(true);
-
-        getSupportActionBar().setTitle(menuItems[position]);
-
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.content_frame, getFragmentToRender(position)).
-                addToBackStack(null).
-                commit();
-
-        drawer.closeDrawer(GravityCompat.START);
-    }
+		drawer.closeDrawer(GravityCompat.START);
+	}
 }

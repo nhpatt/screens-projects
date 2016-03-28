@@ -11,7 +11,7 @@ import com.liferay.ldxdemo.R;
 /**
  * @author Javier Gamarra
  */
-public class CategoryFragment extends AbstractWebContentFragment {
+public class CategoryFragment extends NamedFragment {
 
 	public static CategoryFragment newInstance() {
 		return new CategoryFragment();
@@ -23,4 +23,8 @@ public class CategoryFragment extends AbstractWebContentFragment {
 		return inflater.inflate(R.layout.content_category, container, false);
 	}
 
+	@Override
+	public String getName() {
+		return "Shop by Category";
+	}
 }
