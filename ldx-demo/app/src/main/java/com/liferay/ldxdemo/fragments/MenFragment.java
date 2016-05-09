@@ -3,12 +3,15 @@ package com.liferay.ldxdemo.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import com.liferay.ldxdemo.R;
-import com.liferay.mobile.screens.webcontentdisplay.WebContentDisplayListener;
-import com.liferay.mobile.screens.webcontentdisplay.WebContentDisplayScreenlet;
+import com.liferay.mobile.screens.webcontent.WebContent;
+import com.liferay.mobile.screens.webcontent.display.WebContentDisplayListener;
+import com.liferay.mobile.screens.webcontent.display.WebContentDisplayScreenlet;
 
 /**
  * @author Javier Gamarra
@@ -35,12 +38,18 @@ public class MenFragment extends NamedFragment implements WebContentDisplayListe
 	}
 
 	@Override
-	public String onWebContentReceived(WebContentDisplayScreenlet source, String html) {
-		return "<div id=\"scoped-content\"><style type = \"text/css\" scoped>" + WomenFragment.WEB_STYLE + "</style>" + html + "</div>";
+	public WebContent onWebContentReceived(WebContentDisplayScreenlet source, WebContent webContent) {
+		webContent.setHtml("<div id=\"scoped-content\"><style type = \"text/css\" scoped>" + WomenFragment.WEB_STYLE + "</style>" + webContent.getHtml() + "</div>");
+		return webContent;
 	}
 
 	@Override
 	public void onWebContentFailure(WebContentDisplayScreenlet source, Exception e) {
+
+	}
+
+	@Override
+	public void onWebContentClicked(WebView.HitTestResult result, MotionEvent event) {
 
 	}
 

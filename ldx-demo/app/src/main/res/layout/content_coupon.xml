@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <com.liferay.mobile.screens.webcontentdisplay.WebContentDisplayScreenlet
+    <com.liferay.mobile.screens.webcontent.display.WebContentDisplayScreenlet
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         liferay:articleId="@integer/article_id_coupon1"
