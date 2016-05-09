@@ -2,6 +2,7 @@ package com.liferay.ldxdemo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.EditText;
 
 import com.liferay.ldxdemo.BuildConfig;
 import com.liferay.ldxdemo.R;
+//import com.liferay.ldxdemo.beacon.NotificationUtil;
+import com.liferay.ldxdemo.notification.PushService;
 import com.liferay.ldxdemo.notification.SnackbarUtil;
 import com.liferay.mobile.screens.auth.login.LoginListener;
 import com.liferay.mobile.screens.auth.login.LoginScreenlet;
@@ -40,6 +43,15 @@ public class MainActivity extends AppCompatActivity implements LoginListener, Vi
 	@Override
 	public void onLoginSuccess(User user) {
 		startActivity(new Intent(this, MenuActivity.class));
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			public void run() {
+				String title = getString(R.string.app_slogan);
+				String description = "Near our store today? Hurry in and use your 25% off our Spring Shoe Sale! Click for details.";
+				PushService.createGlobalNotification(title, description, getApplicationContext());
+			}
+		}, 15000);
+
 	}
 
 	@Override

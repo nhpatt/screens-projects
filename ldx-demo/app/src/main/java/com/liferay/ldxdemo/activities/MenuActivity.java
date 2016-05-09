@@ -2,6 +2,7 @@ package com.liferay.ldxdemo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +21,7 @@ import com.liferay.ldxdemo.fragments.ReviewFragment;
 import com.liferay.ldxdemo.fragments.ShoesFragment;
 import com.liferay.ldxdemo.fragments.WalletFragment;
 import com.liferay.ldxdemo.fragments.WomenFragment;
+import com.liferay.ldxdemo.notification.PushService;
 import com.liferay.ldxdemo.notification.SnackbarUtil;
 import com.liferay.mobile.android.service.Session;
 import com.liferay.mobile.screens.context.SessionContext;
@@ -54,7 +56,7 @@ public class MenuActivity extends PushScreensActivity
 		navigationView.setNavigationItemSelectedListener(this);
 
 		fragmentId = getIntent().getIntExtra("fragmentId", 0);
-		navigationView.getMenu().getItem(fragmentId).setChecked(true);
+		//navigationView.getMenu().getItem(fragmentId).setChecked(true);
 	}
 
 	@Override

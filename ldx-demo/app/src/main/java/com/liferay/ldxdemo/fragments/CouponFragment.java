@@ -14,11 +14,8 @@ import com.liferay.ldxdemo.R;
  */
 public class CouponFragment extends Fragment {
 
-	public static CouponFragment newInstance(Integer recordId, Integer recordSetId, int ddmStructureId) {
+	public static CouponFragment newInstance() {
 		Bundle args = new Bundle();
-		args.putInt("recordId", recordId);
-		args.putInt("recordSetId", recordSetId);
-		args.putInt("ddmStructureId", ddmStructureId);
 		CouponFragment fragment = new CouponFragment();
 		fragment.setArguments(args);
 		return fragment;

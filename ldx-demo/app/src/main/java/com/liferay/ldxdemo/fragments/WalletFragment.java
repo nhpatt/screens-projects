@@ -66,46 +66,53 @@ public class WalletFragment extends NamedFragment implements BaseListListener<Re
 
 	@Override
 	public void onListItemSelected(Record element, View view) {
-		loadDDLForm(element);
-	}
 
-	private void loadDDLForm(Record element) {
-		final Integer recordId = (Integer) (element.getModelAttributes().get("recordId"));
-		final Integer recordSetId = (Integer) (element.getModelAttributes().get("recordSetId"));
+		//loadDDLForm(element);
 
-		try {
-			Session session = SessionContext.createSessionFromCurrentSession();
-			session.setCallback(getCallback(recordId, recordSetId));
-
-			new DDLRecordSetService(session).getRecordSet(recordSetId);
-		} catch (Exception e) {
-			LiferayLogger.e("error loading structure id", e);
-		}
-	}
-
-	private JSONObjectCallback getCallback(final Integer recordId, final Integer recordSetId) {
-		return new JSONObjectCallback() {
-
-			@Override
-			public void onSuccess(JSONObject result) {
-				try {
-					getFragmentManager().
-							beginTransaction().
-							replace(R.id.content_frame, CouponFragment.newInstance(recordId, recordSetId, result.getInt("DDMStructureId"))).
+		getFragmentManager().
+						beginTransaction().
+							replace(R.id.content_frame, CouponFragment.newInstance()).
 							addToBackStack(null).
 							commit();
-
-				} catch (JSONException e) {
-					LiferayLogger.e("error parsing JSON", e);
-				}
-			}
-
-			@Override
-			public void onFailure(Exception e) {
-				LiferayLogger.e("error loading structure id", e);
-			}
-		};
 	}
+
+//	private void loadDDLForm(Record element) {
+//		final String recordId = (String) (element.getModelAttributes().get("recordId"));
+//		final String recordSetId = (String) (element.getModelAttributes().get("recordSetId"));
+//
+//		try {
+//			Session session = SessionContext.createSessionFromCurrentSession();
+//			session.setCallback(getCallback(recordId, recordSetId));
+//
+//			new DDLRecordSetService(session).getRecordSet(Long.valueOf(recordSetId));
+//		} catch (Exception e) {
+//			LiferayLogger.e("error loading structuare id", e);
+//		}
+//	}
+//
+//	private JSONObjectCallback getCallback(final String recordId, final String recordSetId) {
+//		return new JSONObjectCallback() {
+//
+//			@Override
+//			public void onSuccess(JSONObject result) {
+//				try {
+//					getFragmentManager().
+//							beginTransaction().
+//							replace(R.id.content_frame, CouponFragment.newInstance(recordId, recordSetId, result.getInt("DDMStructureId"))).
+//							addToBackStack(null).
+//							commit();
+//
+//				} catch (JSONException e) {
+//					LiferayLogger.e("error parsing JSON", e);
+//				}
+//			}
+//
+//			@Override
+//			public void onFailure(Exception e) {
+//				LiferayLogger.e("error loading structure id", e);
+//			}
+//		};
+//	}
 
 	@Override
 	public void loadingFromCache(boolean success) {

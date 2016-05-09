@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/imgo"
-        liferay:labelFields="offerName"
+        liferay:labelFields="Title"
         liferay:layoutId="@layout/ddl_list_material"
         liferay:recordSetId="@integer/ddl_recordset_id"
         liferay:structureId="@integer/ddl_structure_id" />

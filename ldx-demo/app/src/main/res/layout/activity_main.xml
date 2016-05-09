@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/background"
         android:layout_marginTop="100dp"
-        app:basicAuthMethod="email"
+        app:basicAuthMethod="screen_name"
         app:credentialsStorage="shared_preferences"
         app:layoutId="@layout/login_material" />
 

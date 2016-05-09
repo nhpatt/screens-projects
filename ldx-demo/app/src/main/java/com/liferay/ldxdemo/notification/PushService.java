@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.liferay.ldxdemo.R;
+import com.liferay.ldxdemo.activities.MenuActivity;
 import com.liferay.ldxdemo.fragments.WalletFragment;
 import com.liferay.mobile.screens.push.AbstractPushService;
 
@@ -29,32 +30,33 @@ public class PushService extends AbstractPushService {
 		String title = getString(R.string.app_slogan);
 		String description = "Near our store today? Hurry in and use your 25% off our Spring Shoe Sale! Click for details.";
 
-		createGlobalNotification(title, description);
+		createGlobalNotification(title, description, this);
 	}
 
-	private void createGlobalNotification(String title, String description) {
+	public static void createGlobalNotification(String title, String description, Context context) {
 		Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 				.setContentTitle(title)
 				.setContentText(description)
 				.setAutoCancel(true)
 				.setSound(uri)
 				.setVibrate(new long[]{2000, 1000, 2000, 1000})
-				.setSmallIcon(R.drawable.liferay_glyph);
+				.setSmallIcon(R.drawable.glyph);
 
-		builder.setContentIntent(createPendingIntentForNotifications());
+		builder.setContentIntent(createPendingIntentForNotifications(context));
 
 		Notification notification = builder.build();
 		NotificationManager notificationManager =
-				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.notify(NOTIFICATION_ID, notification);
 	}
 
-	private PendingIntent createPendingIntentForNotifications() {
-		Intent resultIntent = new Intent(this, WalletFragment.class);
+	private static PendingIntent createPendingIntentForNotifications(Context context) {
+		Intent resultIntent = new Intent(context, MenuActivity.class);
+		resultIntent.putExtra("fragmentId", R.id.wallet);
 
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 		stackBuilder.addNextIntent(resultIntent);
 		return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
