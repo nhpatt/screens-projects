@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.liferay.ldxdemo.R;
 import com.liferay.ldxdemo.activities.MenuActivity;
+import com.liferay.mobile.screens.context.SessionContext;
 import com.liferay.mobile.screens.ddl.form.DDLFormListener;
 import com.liferay.mobile.screens.ddl.form.DDLFormScreenlet;
 import com.liferay.mobile.screens.ddl.model.DocumentField;
@@ -30,8 +31,11 @@ public class ReviewFragment extends NamedFragment implements DDLFormListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.content_review, container, false);
 
+		SessionContext.createBasicSession("test", "test");
+
 		DDLFormScreenlet ddlFormScreenlet = (DDLFormScreenlet) view.findViewById(R.id.form_review);
 		ddlFormScreenlet.setListener(this);
+
 
 		return view;
 	}
@@ -48,6 +52,8 @@ public class ReviewFragment extends NamedFragment implements DDLFormListener {
 
 	@Override
 	public void onDDLFormRecordAdded(Record record) {
+		SessionContext.createBasicSession(getString(R.string.default_user), getString(R.string.default_password));
+
 		goToCategory();
 
 		AlertDialog.Builder builder =
