@@ -1,5 +1,8 @@
 package com.liferay.ldxdemo.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,12 +13,15 @@ import android.widget.EditText;
 
 import com.liferay.ldxdemo.BuildConfig;
 import com.liferay.ldxdemo.R;
-//import com.liferay.ldxdemo.beacon.NotificationUtil;
 import com.liferay.ldxdemo.notification.PushService;
 import com.liferay.ldxdemo.notification.SnackbarUtil;
 import com.liferay.mobile.screens.auth.login.LoginListener;
 import com.liferay.mobile.screens.auth.login.LoginScreenlet;
 import com.liferay.mobile.screens.context.User;
+
+import java.util.Calendar;
+
+//import com.liferay.ldxdemo.beacon.NotificationUtil;
 
 /**
  * @author Javier Gamarra
@@ -38,11 +44,13 @@ public class MainActivity extends AppCompatActivity implements LoginListener, Vi
 		}
 
 		findViewById(R.id.sign_up).setOnClickListener(this);
+
 	}
 
 	@Override
 	public void onLoginSuccess(User user) {
 		startActivity(new Intent(this, MenuActivity.class));
+
 		Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
 			public void run() {
@@ -52,6 +60,21 @@ public class MainActivity extends AppCompatActivity implements LoginListener, Vi
 			}
 		}, 15000);
 
+//		launchInSeconds(5);
+
+	}
+
+	public void launchInSeconds(int seconds) {
+		Context applicationContext = this.getApplicationContext();
+		Intent intent = new Intent(applicationContext, AlarmReceiver.class);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, intent, 0);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.add(Calendar.SECOND, seconds);
+
+		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 	}
 
 	@Override

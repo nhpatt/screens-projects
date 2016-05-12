@@ -55,5 +55,9 @@
     <string name="sign_up">Sign Up</string>
     <string name="navigation_drawer_open">Nav drawer open</string>
     <string name="navigation_drawer_close">Nav drawer close</string>
+    <string name="thanks_for_buying">¡Muchas gracias por comprar!</string>
+    <string name="review">¿Puedes darnos tu opinión?</string>
+    <string name="sorry_for_the_experience">Lamentamos la experiencia</string>
+    <string name="we_will_get_in_contact">Un representante se pondrá en contacto contigo para ayudarte</string>
 
 </resources>
