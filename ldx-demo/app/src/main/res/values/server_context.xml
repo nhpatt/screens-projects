@@ -2,7 +2,7 @@
 <resources>
 
     <!--<string name="liferay_server">http://192.168.40.206:8080/</string>-->
-    <string name="liferay_server">http://10.0.2.2:8080/</string>
+    <string name="liferay_server">http://192.168.40.184:8080/</string>
     <!--<string name="liferay_server">http://192.168.1.37:8080/</string>-->
     <!--<string name="liferay_server">https://cloud-10-0-20-45.liferay.com/</string>-->
     <!--<string name="liferay_server">http://192.168.56.1:8080</string>-->

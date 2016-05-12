@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity implements LoginListener, Vi
 			}
 		}, 15000);
 
-//		launchInSeconds(5);
+		launchNotificationInSeconds(5);
 
 	}
 
-	public void launchInSeconds(int seconds) {
+	public void launchNotificationInSeconds(int seconds) {
 		Context applicationContext = this.getApplicationContext();
 		Intent intent = new Intent(applicationContext, AlarmReceiver.class);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, intent, 0);
