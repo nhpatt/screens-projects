@@ -28,4 +28,6 @@
 		<item name="colorPrimary">#EEEEEE</item>
 	</style>
 
+	<style name="AlertDialogCustom" parent="Theme.AppCompat.Dialog.Alert"></style>
+
 </resources>

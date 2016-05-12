@@ -1,7 +1,10 @@
 package com.liferay.ldxdemo.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +49,18 @@ public class ReviewFragment extends NamedFragment implements DDLFormListener {
 	@Override
 	public void onDDLFormRecordAdded(Record record) {
 		goToCategory();
+
+		AlertDialog.Builder builder =
+				new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialogCustom))
+						.setTitle(R.string.sorry_for_the_experience)
+						.setMessage(R.string.we_will_get_in_contact)
+						.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+							}
+						});
+		builder.create().show();
 	}
 
 	@Override
